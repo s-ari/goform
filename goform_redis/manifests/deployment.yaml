@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: goform-deployment
+  labels:
+    app: goform
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: goform
+    spec:
+      containers:
+      - name: goform
+        image: arimas/goform:latest
+        imagePullPolicy: Always
+        command: ["/usr/local/goform/goform"]
+        ports:
+        - containerPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: redis
+        image: gcr.io/google_containers/redis:e2e
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 6379

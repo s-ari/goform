@@ -1,0 +1,51 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: goform-deployment
+  labels:
+    app: goform-sql
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: goform-sql
+    spec:
+      containers:
+      - name: goform-sql
+        image: arimas/goform_sql:latest
+        imagePullPolicy: Always
+        command: ["/usr/local/goform_sql/goform_sql"]
+        ports:
+        - containerPort: 8080
+        env:
+          - name: USER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: user-password
+                key: user-password
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  template:
+    metadata:
+      labels:
+        app: mysql
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7.20
+        imagePullPolicy: Always
+        env:
+        - name: MYSQL_ROOT_PASSWORD 
+          valueFrom:
+            secretKeyRef:
+              name: root-password
+              key: root-password
+        ports:
+        - containerPort: 3306

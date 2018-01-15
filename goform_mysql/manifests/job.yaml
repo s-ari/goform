@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbjob
+spec:
+  template:
+    spec:
+      containers:
+      - name: dbjob
+        image: arimas/goform_sql:latest
+        env:
+          - name: ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: root-password
+                key: root-password
+          - name: USER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: user-password
+                key: user-password
+        command:
+        - "/bin/bash"
+        - "-c"
+        - |
+            user="root"
+            root_password=$(echo ${ROOT_PASSWORD})
+            host="mysql"
+            database="goform"
+            user_password=$(echo ${USER_PASSWORD})
+
+            status() {
+              if [ $1 -gt 0 ]; then
+                exit 1
+              fi
+            }
+
+            mysql -h ${host} -u${user} -p${root_password} -e "CREATE DATABASE goform CHARACTER SET utf8;"
+            status $(echo $?)
+            mysql -h ${host} -u${user} -p${root_password} -e "GRANT ALL PRIVILEGES ON goform.* TO goform@'%' IDENTIFIED BY '"${user_password}"' WITH GRANT OPTION;"
+            status $(echo $?)
+            mysql -h ${host} -u${user} -p${root_password} ${database} < /usr/local/goform_sql/create_table.sql
+            status $(echo $?)
+            
+            exit 0
+      restartPolicy: Never
