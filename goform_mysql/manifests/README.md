@@ -20,6 +20,6 @@ kubectl delete -f job.yaml
 kubectl delete -f ingress.yaml
 kubectl delete -f service.yaml
 kubectl delete -f deployment.yaml
-delete secrets root-password
-delete secrets user-password
+kubectl delete secrets root-password
+kubectl delete secrets user-password
 ```
