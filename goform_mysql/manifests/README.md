@@ -1,3 +1,4 @@
+```
 echo -n "<ROOT_PASSWORD>" > /tmp/root-password
 kubectl create secret generic root-password --from-file=/tmp/root-password
 echo -n "<USER_PASSWORD" > /tmp/user-password
@@ -21,3 +22,4 @@ kubectl delete -f service.yaml
 kubectl delete -f deployment.yaml
 delete secrets root-password
 delete secrets user-password
+```
