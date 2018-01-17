@@ -40,7 +40,7 @@ Register secret befor create mysql root password and user password.
 cd manifest
 echo -n "<ROOT_PASSWORD>" > /tmp/root-password
 kubectl create secret generic root-password --from-file=/tmp/root-password
-echo -n "<USER_PASSWORD" > /tmp/user-password
+echo -n "<USER_PASSWORD>" > /tmp/user-password
 kubectl create secret generic user-password --from-file=/tmp/user-password
 ```
 
@@ -105,6 +105,7 @@ This job is creating database, table and mysql user.
 Pleas you should check job status of SUCCESSFUL.
 
 ```
+kubectl create -f job.yaml
 kubectl get job
 NAME      DESIRED   SUCCESSFUL   AGE
 dbjob     1         1            6s
