@@ -7,7 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-    "os"
+	"os"
 )
 
 const (
@@ -30,15 +30,16 @@ func Top(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	value := r.FormValue("key")
+	if len(value) != 0 {
+		Insert(value)
+	}
+
 	list := Select()
 	t := template.Must(template.ParseFiles(tpl))
 	err := t.ExecuteTemplate(w, "index.html.tpl", list)
 	CheckError(err)
 
-	value := r.FormValue("key")
-	if len(value) != 0 {
-		Insert(value)
-	}
 }
 
 func Connect() string {
