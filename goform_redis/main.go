@@ -21,6 +21,12 @@ func top(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Write form data
+	value := r.FormValue("key")
+	if len(value) != 0 {
+		writeData(value)
+	}
+
 	// Output template html
 	list := getAllData()
 	t := template.Must(template.ParseFiles(TEMPLATE))
@@ -28,11 +34,6 @@ func top(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	// Write form data
-	value := r.FormValue("key")
-	if len(value) != 0 {
-		writeData(value)
-	}
 }
 
 func getAllData() []string {
