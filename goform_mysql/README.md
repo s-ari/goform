@@ -139,3 +139,9 @@ Dockerfile build
 docker build . -t arimas/goform_sql
 ```
 
+Debug
+```
+export USER_PASSWORD=<DB USER PASSWORD>
+go run main.go
+```
+
