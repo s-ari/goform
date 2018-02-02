@@ -37,7 +37,7 @@ A work directory is the manifest directory.
 Register secret befor create mysql root password and user password.
 
 ```
-cd manifest
+cd manifests
 echo -n "<ROOT_PASSWORD>" > /tmp/root-password
 kubectl create secret generic root-password --from-file=/tmp/root-password
 echo -n "<USER_PASSWORD>" > /tmp/user-password
